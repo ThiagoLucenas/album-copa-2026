@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Álbum Copa 2026 — Controle suas figurinhas</title>
+  <meta name="description" content="Controle completo das suas figurinhas da Copa do Mundo 2026. Grátis para usar, Premium para dominar.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+  <style>
+    :root {
+      --primary: #8B1A32;
+      --primary-dark: #6B1226;
+      --secondary: #D4A853;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --success: #28a745;
+      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--gradient);
+      color: white;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--gradient);
+      color: white;
+      padding: 5rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212,168,83,0.1) 0%, transparent 60%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .hero h1 span {
+      color: var(--secondary);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-gold {
+      background: var(--secondary);
+      color: var(--dark);
+      box-shadow: 0 4px 15px rgba(212,168,83,0.4);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(212,168,83,0.6);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-outline:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--gray);
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+
+    /* FEATURES */
+    .features {
+      background: var(--light);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .badge-free {
+      display: inline-block;
+      background: #e8f5e9;
+      color: var(--success);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .badge-premium {
+      display: inline-block;
+      background: #fff8e1;
+      color: #f57c00;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* COMO FUNCIONA */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      counter-reset: step;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: var(--gradient);
+      color: white;
+      font-weight: 800;
+      font-size: 1.3rem;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+    }
+
+    .step h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    /* PLANOS */
+    #planos {
+      background: var(--light);
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .plan-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      position: relative;
+      transition: transform 0.3s;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .plan-card.featured {
+      border: 3px solid var(--secondary);
+      transform: scale(1.03);
+    }
+
+    .plan-card.featured:hover {
+      transform: scale(1.05);
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--secondary);
+      color: var(--dark);
+      padding: 0.3rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .plan-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-price {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 1rem 0;
+    }
+
+    .plan-price span {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--gray);
+    }
+
+    .plan-features {
+      list-style: none;
+      text-align: left;
+      margin: 1.5rem 0;
+    }
+
+    .plan-features li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .btn-plano {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .btn-plano.free {
+      background: var(--light);
+      color: var(--dark);
+      border: 2px solid #ddd;
+    }
+
+    .btn-plano.free:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-plano.premium {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 4px 15px rgba(139,26,50,0.3);
+    }
+
+    .btn-plano.premium:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(139,26,50,0.5);
+    }
+
+    .trial-note {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #eee;
+      padding: 1.5rem 0;
+    }
+
+    .faq-question {
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: var(--primary);
+      transition: transform 0.3s;
+    }
+
+    .faq-item.active .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding-top: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    footer p {
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { padding: 3rem 1.5rem 4rem; }
+      section { padding: 3rem 1.5rem; }
+      .plan-card.featured { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">⚽ Copa 2026</div>
+      <nav class="nav-links">
+        <a href="#features">Recursos</a>
+        <a href="#como-funciona">Como Funciona</a>
+        <a href="#planos">Planos</a>
+        <a href="#faq">FAQ</a>
+        <a href="/album">Abrir Álbum</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Controle suas figurinhas da<br><span>Copa do Mundo 2026</span></h1>
+    <p>O app mais completo para organizar, trocar e completar seu álbum. 980 figurinhas, 48 seleções, tudo na palma da mão.</p>
+    <div class="hero-buttons">
+      <a href="/album" class="btn btn-gold">Usar Grátis →</a>
+      <a href="#planos" class="btn btn-outline">Ver Plano Premium</a>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Tudo que você precisa</h2>
+      <p class="section-subtitle">Recursos pensados para colecionadores de verdade</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <span class="badge-free">GRÁTIS</span>
+          <h3>Controle Completo</h3>
+          <p>Marque figurinhas que tem, repetidas e faltantes. 980 figurinhas organizadas por grupo.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <span class="badge-free">GRÁTIS</span>
+          <h3>Progresso Visual</h3>
+          <p>Veja o percentual de conclusão por seleção, grupo e total do álbum em tempo real.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <span class="badge-free">GRÁTIS</span>
+          <h3>PWA Mobile</h3>
+          <p>Instale no celular como um app nativo. Funciona offline após o primeiro acesso.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <span class="badge-free">GRÁTIS</span>
+          <h3>Compartilhar Trocas</h3>
+          <p>Envie sua lista de faltantes e repetidas via WhatsApp com um toque.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">☁️</div>
+          <span class="badge-premium">PREMIUM</span>
+          <h3>Sync na Nuvem</h3>
+          <p>Seus dados sincronizados em todos os dispositivos. Nunca perca seu progresso.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👥</div>
+          <span class="badge-premium">PREMIUM</span>
+          <h3>Grupos de Troca</h3>
+          <p>Encontre colecionadores próximos e combine trocas automaticamente.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <span class="badge-premium">PREMIUM</span>
+          <h3>Ranking Nacional</h3>
+          <p>Compare seu progresso com outros colecionadores e suba no ranking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚫</div>
+          <span class="badge-premium">PREMIUM</span>
+          <h3>Sem Anúncios</h3>
+          <p>Experiência limpa e focada, sem distrações ou propagandas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona">
+    <div class="container">
+      <h2 class="section-title">Como Funciona</h2>
+      <p class="section-subtitle">Simples assim — comece em 30 segundos</p>
+      <div class="steps">
+        <div class="step">
+          <h3>Abra o Álbum</h3>
+          <p>Acesse gratuitamente pelo celular ou computador, sem cadastro.</p>
+        </div>
+        <div class="step">
+          <h3>Marque suas Figurinhas</h3>
+          <p>Toque para marcar as que tem. Toque mais para contar repetidas.</p>
+        </div>
+        <div class="step">
+          <h3>Veja o Progresso</h3>
+          <p>Acompanhe quanto falta por grupo e no total do álbum.</p>
+        </div>
+        <div class="step">
+          <h3>Troque com Amigos</h3>
+          <p>Compartilhe sua lista de repetidas e faltantes via WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section id="planos">
+    <div class="container">
+      <h2 class="section-title">Escolha seu Plano</h2>
+      <p class="section-subtitle">Comece grátis, evolua quando quiser</p>
+      <div class="plans-grid">
+        <!-- GRÁTIS -->
+        <div class="plan-card">
+          <h3>Grátis</h3>
+          <div class="plan-price">R$ 0 <span>/sempre</span></div>
+          <ul class="plan-features">
+            <li>980 figurinhas para controlar</li>
+            <li>Progresso por grupo e seleção</li>
+            <li>Lista de faltantes e repetidas</li>
+            <li>Compartilhar via WhatsApp</li>
+            <li>PWA — instale no celular</li>
+            <li>Salva no dispositivo</li>
+          </ul>
+          <a href="/album" class="btn-plano free">Usar Grátis</a>
+        </div>
+        <!-- PREMIUM -->
+        <div class="plan-card featured">
+          <div class="plan-badge">⭐ MAIS POPULAR</div>
+          <h3>Premium</h3>
+          <div class="plan-price">R$ 19,90 <span>/mês</span></div>
+          <ul class="plan-features">
+            <li>Tudo do plano Grátis</li>
+            <li>Sync na nuvem (multi-device)</li>
+            <li>Grupos de troca automáticos</li>
+            <li>Ranking nacional</li>
+            <li>Sem anúncios</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <button class="btn-plano premium" onclick="irParaCheckout()">Assinar Premium →</button>
+          <p class="trial-note">🎁 3 dias grátis para testar • Cancele quando quiser<br><small>6 cobranças (duração da temporada)</small></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">Perguntas Frequentes</h2>
+      <p class="section-subtitle">Tire suas dúvidas antes de começar</p>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">Preciso pagar para usar o álbum?</div>
+          <div class="faq-answer">Não! O controle de figurinhas é 100% gratuito. O plano Premium adiciona recursos extras como sync na nuvem, grupos de troca e ranking.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Como funciona o trial de 3 dias?</div>
+          <div class="faq-answer">Ao assinar o Premium, você tem 3 dias grátis para testar todos os recursos. Se não gostar, cancele antes do período acabar e não será cobrado.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Posso cancelar a qualquer momento?</div>
+          <div class="faq-answer">Sim! Você pode cancelar sua assinatura a qualquer momento diretamente pelo portal do Stripe. Sem multas ou taxas.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Quantas figurinhas o álbum tem?</div>
+          <div class="faq-answer">O álbum completo tem 980 figurinhas: 48 seleções organizadas em 12 grupos (A–L), mais figurinhas especiais FWC (20) e Coca-Cola CC (14).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Meus dados ficam salvos?</div>
+          <div class="faq-answer">No plano Grátis, seus dados ficam salvos no navegador (localStorage). No Premium, ficam sincronizados na nuvem em todos os seus dispositivos.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Funciona no iPhone/Android?</div>
+          <div class="faq-answer">Sim! O app funciona em qualquer navegador moderno e pode ser instalado como PWA no iPhone (Safari) e Android (Chrome).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Por quanto tempo dura a assinatura?</div>
+          <div class="faq-answer">A assinatura Premium dura 6 meses (duração da temporada da Copa). Após 6 cobranças, é cancelada automaticamente.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Álbum Copa 2026. Projeto independente, não oficial FIFA.</p>
+  </footer>
+
+  <script>
+    // FAQ Toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('active');
+      });
+    });
+
+    // Checkout Stripe
+    async function irParaCheckout() {
+      const btn = document.querySelector('.btn-plano.premium');
+      btn.textContent = '⏳ Aguarde...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: '', nome: '' }),
+        });
+
+        if (!res.ok) throw new Error('Erro na resposta do servidor');
+
+        const { url, error } = await res.json();
+        if (error) throw new Error(error);
+
+        window.location.href = url;
+
+      } catch(e) {
+        alert('Erro ao conectar com o servidor: ' + e.message);
+        btn.textContent = 'Assinar Premium →';
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+</html>

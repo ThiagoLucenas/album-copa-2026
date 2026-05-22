@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Álbum Copa 2026 — Controle de Figurinhas</title>
+  <meta name="description" content="Controle completo das figurinhas da Copa do Mundo 2026. 980 figurinhas, 48 seleções.">
+  <meta name="theme-color" content="#8B1A32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiw4FsYnVtIENvcGEgMjAyNiIsInNob3J0X25hbWUiOiJDb3BhMjAyNiIsInN0YXJ0X3VybCI6Ii9hbGJ1bSIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiM4QjFBMzIiLCJ0aGVtZV9jb2xvciI6IiM4QjFBMzIiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHRleHQgeT0nLjllbScgZm9udC1zaXplPSc5MCc+4pq9PC90ZXh0Pjwvc3ZnPiIsInNpemVzIjoiYW55IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+  <style>
+    :root {
+      --primary: #8B1A32;
+      --primary-dark: #6B1226;
+      --secondary: #D4A853;
+      --dark: #1a1a2e;
+      --light: #f5f5f5;
+      --gray: #888;
+      --success: #4caf50;
+      --have: #c8e6c9;
+      --have-border: #4caf50;
+      --repeat: #fff3e0;
+      --repeat-border: #ff9800;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      padding-bottom: 70px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 0.8rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .topbar h1 {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .progress-total {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .progress-bar-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0.3rem 1rem 0;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--secondary);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 60px;
+      z-index: 99;
+      overflow-x: auto;
+    }
+
+    .tab {
+      flex: 1;
+      min-width: fit-content;
+      padding: 0.7rem 1rem;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* SIDEBAR INDEX */
+    .sidebar {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 12px 0 0 12px;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      padding: 0.3rem 0;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem;
+      padding-right: 44px;
+    }
+
+    /* GROUP */
+    .group-section {
+      margin-bottom: 2rem;
+    }
+
+    .group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 108px;
+      z-index: 50;
+    }
+
+    .group-header h2 {
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .group-progress {
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    .group-progress-bar {
+      width: 60px;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.5rem;
+    }
+
+    .group-progress-bar-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    /* TEAM */
+    .team-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .team-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .team-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .team-progress {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    /* STICKERS GRID */
+    .stickers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+      gap: 6px;
+    }
+
+    .sticker {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+      position: relative;
+    }
+
+    .sticker:active {
+      transform: scale(0.92);
+    }
+
+    .sticker.have {
+      background: var(--have);
+      border-color: var(--have-border);
+      color: #2e7d32;
+    }
+
+    .sticker.repeat {
+      background: var(--repeat);
+      border-color: var(--repeat-border);
+      color: #e65100;
+    }
+
+    .sticker .count {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 0.55rem;
+      background: #ff9800;
+      color: white;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* TAB PANELS */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* LISTS */
+    .list-section {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .list-section h3 {
+      font-size: 0.9rem;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+
+    .list-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .list-item {
+      background: var(--light);
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* SHARE BUTTONS */
+    .share-section {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      margin: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .share-btn.whatsapp {
+      background: #25d366;
+      color: white;
+    }
+
+    .share-btn.copy {
+      background: white;
+      color: var(--dark);
+      border: 2px solid #ddd;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* EXPORT */
+    .export-section {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .export-code {
+      background: var(--dark);
+      color: #0f0;
+      padding: 1rem;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 0.7rem;
+      word-break: break-all;
+      margin: 1rem 0;
+      max-height: 200px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    /* PWA BANNER */
+    .pwa-banner {
+      display: none;
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 200;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    .pwa-banner.show {
+      display: block;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateX(-50%) translateY(100%); }
+      to { transform: translateX(-50%) translateY(0); }
+    }
+
+    .pwa-banner p {
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .pwa-banner button {
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0 0.3rem;
+    }
+
+    .pwa-install {
+      background: var(--primary);
+      color: white;
+    }
+
+    .pwa-dismiss {
+      background: #eee;
+      color: var(--dark);
+    }
+
+    /* BOTTOM NAV (mobile) */
+    @media (max-width: 768px) {
+      .main { padding: 0.8rem; padding-right: 40px; }
+      .stickers-grid { grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 4px; }
+      .sidebar a { width: 32px; height: 32px; font-size: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <h1>⚽ Álbum Copa 2026</h1>
+      <span class="progress-total" id="progressTotal">0 / 980</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressBarFill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-tab="album">Álbum</div>
+    <div class="tab" data-tab="faltam">Faltam</div>
+    <div class="tab" data-tab="repetidas">Repetidas</div>
+    <div class="tab" data-tab="trocas">Trocas</div>
+    <div class="tab" data-tab="exportar">Exportar</div>
+  </div>
+
+  <!-- SIDEBAR INDEX -->
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- ALBUM TAB -->
+    <div class="tab-panel active" id="panel-album"></div>
+
+    <!-- FALTAM TAB -->
+    <div class="tab-panel" id="panel-faltam"></div>
+
+    <!-- REPETIDAS TAB -->
+    <div class="tab-panel" id="panel-repetidas"></div>
+
+    <!-- TROCAS TAB -->
+    <div class="tab-panel" id="panel-trocas">
+      <div class="share-section">
+        <h2 style="margin-bottom:1rem;">Compartilhar para Trocas</h2>
+        <p style="color:var(--gray);margin-bottom:1.5rem;">Envie suas listas para amigos e combine trocas</p>
+        <button class="share-btn whatsapp" onclick="shareWhatsApp('faltam')">📤 Faltam via WhatsApp</button>
+        <button class="share-btn whatsapp" onclick="shareWhatsApp('repetidas')">📤 Repetidas via WhatsApp</button>
+        <button class="share-btn copy" onclick="copyList('faltam')">📋 Copiar Faltantes</button>
+        <button class="share-btn copy" onclick="copyList('repetidas')">📋 Copiar Repetidas</button>
+      </div>
+    </div>
+
+    <!-- EXPORTAR TAB -->
+    <div class="tab-panel" id="panel-exportar">
+      <div class="export-section">
+        <h2 style="margin-bottom:1rem;">Exportar / Importar</h2>
+        <p style="color:var(--gray);margin-bottom:1.5rem;">Use o código para transferir seu progresso ou calcular trocas com amigos</p>
+        <button class="share-btn copy" onclick="exportData()">📦 Gerar Código de Exportação</button>
+        <div class="export-code" id="exportCode" style="display:none;"></div>
+        <div style="margin-top:2rem;">
+          <p style="font-size:0.9rem;margin-bottom:0.5rem;font-weight:600;">Importar código:</p>
+          <textarea id="importInput" rows="3" style="width:100%;border-radius:8px;border:2px solid #ddd;padding:0.8rem;font-family:monospace;font-size:0.75rem;" placeholder="Cole o código aqui..."></textarea>
+          <button class="share-btn copy" onclick="importData()" style="margin-top:0.5rem;">📥 Importar</button>
+        </div>
+        <div style="margin-top:2rem;">
+          <button class="share-btn" style="background:#ff5252;color:white;" onclick="resetData()">🗑️ Resetar Tudo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA BANNER -->
+  <div class="pwa-banner" id="pwaBanner">
+    <p><strong>Instale o app!</strong><br>Adicione à tela inicial para acesso rápido.</p>
+    <button class="pwa-install" id="pwaInstall">Instalar</button>
+    <button class="pwa-dismiss" onclick="dismissPwa()">Depois</button>
+  </div>
+
+  <script>
+    // ===== DATA: TEAMS & GROUPS =====
+    const GROUPS = {
+      'A': ['Estados Unidos', 'Marrocos', 'Escócia', 'Classificado A4'],
+      'B': ['Espanha', 'Austrália', 'Grécia', 'Classificado B4'],
+      'C': ['México', 'Equador', 'Jamaica', 'Classificado C4'],
+      'D': ['Argentina', 'Uzbequistão', 'Classificado D3', 'Classificado D4'],
+      'E': ['Alemanha', 'Uruguai', 'Classificado E3', 'Classificado E4'],
+      'F': ['Brasil', 'Colômbia', 'Classificado F3', 'Classificado F4'],
+      'G': ['Inglaterra', 'Senegal', 'Classificado G3', 'Classificado G4'],
+      'H': ['Portugal', 'Irã', 'Classificado H3', 'Classificado H4'],
+      'I': ['França', 'Egito', 'Classificado I3', 'Classificado I4'],
+      'J': ['Holanda', 'Japão', 'Classificado J3', 'Classificado J4'],
+      'K': ['Bélgica', 'Canadá', 'Classificado K3', 'Classificado K4'],
+      'L': ['Croácia', 'Coreia do Sul', 'Classificado L3', 'Classificado L4'],
+    };
+
+    // Stickers per team: prefix + numbers
+    const STICKERS_PER_TEAM = 19; // e.g., USA 1-19
+
+    // Special sections
+    const SPECIALS = {
+      'FWC': { name: 'FIFA World Cup', count: 20 },
+      'CC': { name: 'Coca-Cola', count: 14 },
+    };
+
+    // Team code mapping
+    const TEAM_CODES = {
+      'Estados Unidos': 'USA', 'Marrocos': 'MAR', 'Escócia': 'SCO', 'Classificado A4': 'A4',
+      'Espanha': 'ESP', 'Austrália': 'AUS', 'Grécia': 'GRE', 'Classificado B4': 'B4',
+      'México': 'MEX', 'Equador': 'ECU', 'Jamaica': 'JAM', 'Classificado C4': 'C4',
+      'Argentina': 'ARG', 'Uzbequistão': 'UZB', 'Classificado D3': 'D3', 'Classificado D4': 'D4',
+      'Alemanha': 'GER', 'Uruguai': 'URU', 'Classificado E3': 'E3', 'Classificado E4': 'E4',
+      'Brasil': 'BRA', 'Colômbia': 'COL', 'Classificado F3': 'F3', 'Classificado F4': 'F4',
+      'Inglaterra': 'ENG', 'Senegal': 'SEN', 'Classificado G3': 'G3', 'Classificado G4': 'G4',
+      'Portugal': 'POR', 'Irã': 'IRN', 'Classificado H3': 'H3', 'Classificado H4': 'H4',
+      'França': 'FRA', 'Egito': 'EGY', 'Classificado I3': 'I3', 'Classificado I4': 'I4',
+      'Holanda': 'NED', 'Japão': 'JPN', 'Classificado J3': 'J3', 'Classificado J4': 'J4',
+      'Bélgica': 'BEL', 'Canadá': 'CAN', 'Classificado K3': 'K3', 'Classificado K4': 'K4',
+      'Croácia': 'CRO', 'Coreia do Sul': 'KOR', 'Classificado L3': 'L3', 'Classificado L4': 'L4',
+    };
+
+    // ===== STATE =====
+    let stickers = {}; // { "USA 1": 0, "USA 2": 1, ... }
+
+    // ===== INIT =====
+    function initStickers() {
+      // Load from localStorage
+      const saved = localStorage.getItem('copa2026_stickers');
+      if (saved) {
+        stickers = JSON.parse(saved);
+        return;
+      }
+
+      // Initialize all stickers to 0
+      for (const group of Object.keys(GROUPS)) {
+        for (const team of GROUPS[group]) {
+          const code = TEAM_CODES[team];
+          for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+            stickers[`${code} ${i}`] = 0;
+          }
+        }
+      }
+      // Specials
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
+        stickers[`FWC ${i}`] = 0;
+      }
+      for (let i = 1; i <= SPECIALS.CC.count; i++) {
+        stickers[`CC ${i}`] = 0;
+      }
+    }
+
+    function save() {
+      localStorage.setItem('copa2026_stickers', JSON.stringify(stickers));
+    }
+
+    // ===== RENDER =====
+    function renderAlbum() {
+      const panel = document.getElementById('panel-album');
+      let html = '';
+
+      // Groups A-L
+      for (const group of Object.keys(GROUPS)) {
+        html += `<div class="group-section" id="group-${group}">`;
+        html += `<div class="group-header">
+          <h2>Grupo ${group}</h2>
+          <span class="group-progress" id="gprog-${group}">0%
+            <span class="group-progress-bar"><span class="group-progress-bar-fill" id="gbar-${group}"></span></span>
+          </span>
+        </div>`;
+
+        for (const team of GROUPS[group]) {
+          const code = TEAM_CODES[team];
+          html += `<div class="team-section">
+            <div class="team-header">
+              <span class="team-name">${team}</span>
+              <span class="team-progress" id="tprog-${code}">0/${STICKERS_PER_TEAM}</span>
+            </div>
+            <div class="stickers-grid">`;
+
+          for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+            const id = `${code} ${i}`;
+            html += `<div class="sticker" data-id="${id}" onclick="toggleSticker('${id}')">${code} ${i}</div>`;
+          }
+
+          html += `</div></div>`;
+        }
+        html += `</div>`;
+      }
+
+      // Specials
+      html += `<div class="group-section" id="group-special">`;
+      html += `<div class="group-header">
+        <h2>Especiais</h2>
+        <span class="group-progress" id="gprog-special">0%
+          <span class="group-progress-bar"><span class="group-progress-bar-fill" id="gbar-special"></span></span>
+        </span>
+      </div>`;
+
+      // FWC
+      html += `<div class="team-section">
+        <div class="team-header">
+          <span class="team-name">FIFA World Cup (FWC)</span>
+          <span class="team-progress" id="tprog-FWC">0/${SPECIALS.FWC.count}</span>
+        </div>
+        <div class="stickers-grid">`;
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
+        const id = `FWC ${i}`;
+        html += `<div class="sticker" data-id="${id}" onclick="toggleSticker('${id}')">FWC ${i}</div>`;
+      }
+      html += `</div></div>`;
+
+      // CC
+      html += `<div class="team-section">
+        <div class="team-header">
+          <span class="team-name">Coca-Cola (CC)</span>
+          <span class="team-progress" id="tprog-CC">0/${SPECIALS.CC.count}</span>
+        </div>
+        <div class="stickers-grid">`;
+      for (let i = 1; i <= SPECIALS.CC.count; i++) {
+        const id = `CC ${i}`;
+        html += `<div class="sticker" data-id="${id}" onclick="toggleSticker('${id}')">CC ${i}</div>`;
+      }
+      html += `</div></div>`;
+      html += `</div>`;
+
+      panel.innerHTML = html;
+      updateAllUI();
+    }
+
+    function renderSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      let html = '';
+      for (const group of Object.keys(GROUPS)) {
+        html += `<a href="#group-${group}">${group}</a>`;
+      }
+      html += `<a href="#group-special" title="Especiais">★</a>`;
+      sidebar.innerHTML = html;
+    }
+
+    // ===== TOGGLE STICKER =====
+    function toggleSticker(id) {
+      const current = stickers[id] || 0;
+      if (current >= 5) {
+        stickers[id] = 0;
+      } else {
+        stickers[id] = current + 1;
+      }
+      save();
+      updateStickerUI(id);
+      updateProgress();
+    }
+
+    function updateStickerUI(id) {
+      const el = document.querySelector(`.sticker[data-id="${id}"]`);
+      if (!el) return;
+      const val = stickers[id] || 0;
+      el.classList.remove('have', 'repeat');
+      const existingCount = el.querySelector('.count');
+      if (existingCount) existingCount.remove();
+
+      if (val === 1) {
+        el.classList.add('have');
+      } else if (val > 1) {
+        el.classList.add('repeat');
+        const badge = document.createElement('span');
+        badge.className = 'count';
+        badge.textContent = `×${val}`;
+        el.appendChild(badge);
+      }
+    }
+
+    function updateAllUI() {
+      for (const id of Object.keys(stickers)) {
+        updateStickerUI(id);
+      }
+      updateProgress();
+    }
+
+    // ===== PROGRESS =====
+    function updateProgress() {
+      const total = Object.keys(stickers).length;
+      const have = Object.values(stickers).filter(v => v > 0).length;
+      const pct = total > 0 ? Math.round((have / total) * 100) : 0;
+
+      document.getElementById('progressTotal').textContent = `${have} / ${total}`;
+      document.getElementById('progressBarFill').style.width = pct + '%';
+
+      // Group progress
+      for (const group of Object.keys(GROUPS)) {
+        let groupTotal = 0, groupHave = 0;
+        for (const team of GROUPS[group]) {
+          const code = TEAM_CODES[team];
+          for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+            groupTotal++;
+            if ((stickers[`${code} ${i}`] || 0) > 0) groupHave++;
+          }
+        }
+        const gpct = groupTotal > 0 ? Math.round((groupHave / groupTotal) * 100) : 0;
+        const gprogEl = document.getElementById(`gprog-${group}`);
+        const gbarEl = document.getElementById(`gbar-${group}`);
+        if (gprogEl) gprogEl.innerHTML = `${gpct}% <span class="group-progress-bar"><span class="group-progress-bar-fill" style="width:${gpct}%"></span></span>`;
+      }
+
+      // Special progress
+      let specTotal = SPECIALS.FWC.count + SPECIALS.CC.count;
+      let specHave = 0;
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
+        if ((stickers[`FWC ${i}`] || 0) > 0) specHave++;
+      }
+      for (let i = 1; i <= SPECIALS.CC.count; i++) {
+        if ((stickers[`CC ${i}`] || 0) > 0) specHave++;
+      }
+      const spct = Math.round((specHave / specTotal) * 100);
+      const sprogEl = document.getElementById('gprog-special');
+      if (sprogEl) sprogEl.innerHTML = `${spct}% <span class="group-progress-bar"><span class="group-progress-bar-fill" style="width:${spct}%"></span></span>`;
+
+      // Team progress
+      for (const group of Object.keys(GROUPS)) {
+        for (const team of GROUPS[group]) {
+          const code = TEAM_CODES[team];
+          let tHave = 0;
+          for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+            if ((stickers[`${code} ${i}`] || 0) > 0) tHave++;
+          }
+          const tEl = document.getElementById(`tprog-${code}`);
+          if (tEl) tEl.textContent = `${tHave}/${STICKERS_PER_TEAM}`;
+        }
+      }
+      // FWC & CC team progress
+      let fwcHave = 0;
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
+        if ((stickers[`FWC ${i}`] || 0) > 0) fwcHave++;
+      }
+      const fwcEl = document.getElementById('tprog-FWC');
+      if (fwcEl) fwcEl.textContent = `${fwcHave}/${SPECIALS.FWC.count}`;
+
+      let ccHave = 0;
+      for (let i = 1; i <= SPECIALS.CC.count; i++) {
+        if ((stickers[`CC ${i}`] || 0) > 0) ccHave++;
+      }
+      const ccEl = document.getElementById('tprog-CC');
+      if (ccEl) ccEl.textContent = `${ccHave}/${SPECIALS.CC.count}`;
+    }
+
+    // ===== TABS =====
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        const panel = document.getElementById(`panel-${tab.dataset.tab}`);
+        panel.classList.add('active');
+
+        if (tab.dataset.tab === 'faltam') renderFaltam();
+        if (tab.dataset.tab === 'repetidas') renderRepetidas();
+      });
+    });
+
+    // ===== FALTAM =====
+    function renderFaltam() {
+      const panel = document.getElementById('panel-faltam');
+      const missing = Object.entries(stickers).filter(([k, v]) => v === 0).map(([k]) => k);
+      if (missing.length === 0) {
+        panel.innerHTML = '<div class="share-section"><h2>🎉 Parabéns!</h2><p>Você tem todas as figurinhas!</p></div>';
+        return;
+      }
+
+      // Group by prefix
+      const grouped = {};
+      missing.forEach(id => {
+        const prefix = id.split(' ')[0];
+        if (!grouped[prefix]) grouped[prefix] = [];
+        grouped[prefix].push(id);
+      });
+
+      let html = `<p style="text-align:center;color:var(--gray);margin-bottom:1rem;">Total faltando: <strong>${missing.length}</strong></p>`;
+      for (const [prefix, items] of Object.entries(grouped)) {
+        html += `<div class="list-section"><h3>${prefix} (${items.length})</h3><div class="list-items">`;
+        items.forEach(item => {
+          html += `<span class="list-item">${item}</span>`;
+        });
+        html += `</div></div>`;
+      }
+      panel.innerHTML = html;
+    }
+
+    // ===== REPETIDAS =====
+    function renderRepetidas() {
+      const panel = document.getElementById('panel-repetidas');
+      const repeats = Object.entries(stickers).filter(([k, v]) => v > 1).map(([k, v]) => ({ id: k, count: v - 1 }));
+      if (repeats.length === 0) {
+        panel.innerHTML = '<div class="share-section"><h2>Nenhuma repetida</h2><p>Quando tiver figurinhas repetidas, elas aparecerão aqui.</p></div>';
+        return;
+      }
+
+      const totalRepeat = repeats.reduce((sum, r) => sum + r.count, 0);
+      const grouped = {};
+      repeats.forEach(({ id, count }) => {
+        const prefix = id.split(' ')[0];
+        if (!grouped[prefix]) grouped[prefix] = [];
+        grouped[prefix].push({ id, count });
+      });
+
+      let html = `<p style="text-align:center;color:var(--gray);margin-bottom:1rem;">Total repetidas: <strong>${totalRepeat}</strong> (${repeats.length} diferentes)</p>`;
+      for (const [prefix, items] of Object.entries(grouped)) {
+        html += `<div class="list-section"><h3>${prefix}</h3><div class="list-items">`;
+        items.forEach(({ id, count }) => {
+          html += `<span class="list-item">${id} ×${count}</span>`;
+        });
+        html += `</div></div>`;
+      }
+      panel.innerHTML = html;
+    }
+
+    // ===== SHARE =====
+    function getListText(type) {
+      let items;
+      if (type === 'faltam') {
+        items = Object.entries(stickers).filter(([k, v]) => v === 0).map(([k]) => k);
+        return `⚽ *FALTAM* (Copa 2026)\nTotal: ${items.length}\n\n${items.join(', ')}`;
+      } else {
+        items = Object.entries(stickers).filter(([k, v]) => v > 1).map(([k, v]) => `${k} ×${v-1}`);
+        return `🔄 *REPETIDAS* (Copa 2026)\nTotal: ${items.length}\n\n${items.join(', ')}`;
+      }
+    }
+
+    function shareWhatsApp(type) {
+      const text = getListText(type);
+      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    function copyList(type) {
+      const text = getListText(type);
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Lista copiada!');
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        alert('Lista copiada!');
+      });
+    }
+
+    // ===== EXPORT / IMPORT =====
+    function exportData() {
+      const code = btoa(JSON.stringify(stickers));
+      const el = document.getElementById('exportCode');
+      el.textContent = code;
+      el.style.display = 'block';
+      navigator.clipboard.writeText(code).catch(() => {});
+      alert('Código gerado e copiado!');
+    }
+
+    function importData() {
+      const input = document.getElementById('importInput').value.trim();
+      if (!input) { alert('Cole um código válido.'); return; }
+      try {
+        const data = JSON.parse(atob(input));
+        if (typeof data !== 'object') throw new Error();
+        stickers = data;
+        save();
+        renderAlbum();
+        alert('Dados importados com sucesso!');
+      } catch(e) {
+        alert('Código inválido. Verifique e tente novamente.');
+      }
+    }
+
+    function resetData() {
+      if (!confirm('Tem certeza? Isso apagará TODO o seu progresso!')) return;
+      if (!confirm('Última chance! Realmente deseja apagar tudo?')) return;
+      localStorage.removeItem('copa2026_stickers');
+      stickers = {};
+      initStickers();
+      renderAlbum();
+      alert('Dados resetados.');
+    }
+
+    // ===== PWA =====
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (!localStorage.getItem('copa2026_pwa_dismissed')) {
+        document.getElementById('pwaBanner').classList.add('show');
+      }
+    });
+
+    document.getElementById('pwaInstall').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      }
+      document.getElementById('pwaBanner').classList.remove('show');
+    });
+
+    function dismissPwa() {
+      document.getElementById('pwaBanner').classList.remove('show');
+      localStorage.setItem('copa2026_pwa_dismissed', '1');
+    }
+
+    // iOS Safari detection
+    if (navigator.standalone === false || (navigator.userAgent.match(/iPhone|iPad/) && !window.navigator.standalone)) {
+      if (!localStorage.getItem('copa2026_pwa_dismissed')) {
+        setTimeout(() => {
+          document.getElementById('pwaBanner').classList.add('show');
+          document.querySelector('#pwaBanner p').innerHTML = '<strong>Instale o app!</strong><br>Toque em <strong>Compartilhar ↗</strong> e depois <strong>"Adicionar à Tela de Início"</strong>';
+          document.getElementById('pwaInstall').style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // ===== INIT =====
+    initStickers();
+    renderAlbum();
+    renderSidebar();
+  </script>
+
+</body>
+</html>

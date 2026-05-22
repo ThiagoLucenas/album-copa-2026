@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assinatura Confirmada — Álbum Copa 2026</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+  <style>
+    :root {
+      --primary: #8B1A32;
+      --secondary: #D4A853;
+      --dark: #1a1a2e;
+      --success: #28a745;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 2rem;
+    }
+
+    .success-card {
+      background: white;
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: #e8f5e9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2.5rem;
+      animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: #6c757d;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .plan-summary {
+      background: #f8f9fa;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .plan-summary h3 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .plan-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+
+    .plan-detail:last-child {
+      border-bottom: none;
+    }
+
+    .plan-detail .label {
+      color: #6c757d;
+    }
+
+    .plan-detail .value {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .btn-album {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, #6B1226 100%);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(139,26,50,0.3);
+    }
+
+    .btn-album:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(139,26,50,0.5);
+    }
+
+    .email-note {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #6c757d;
+      line-height: 1.5;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .confetti span {
+      position: absolute;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: fall 3s linear forwards;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confetti" id="confetti"></div>
+
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h1>Bem-vindo ao Premium!</h1>
+    <p class="subtitle">Sua assinatura foi ativada com sucesso.</p>
+
+    <div class="plan-summary">
+      <h3>⭐ Resumo do Plano</h3>
+      <div class="plan-detail">
+        <span class="label">Plano</span>
+        <span class="value">Premium Copa 2026</span>
+      </div>
+      <div class="plan-detail">
+        <span class="label">Trial gratuito</span>
+        <span class="value">3 dias</span>
+      </div>
+      <div class="plan-detail">
+        <span class="label">Valor mensal</span>
+        <span class="value">R$ 19,90/mês</span>
+      </div>
+      <div class="plan-detail">
+        <span class="label">Duração</span>
+        <span class="value">6 meses (temporada)</span>
+      </div>
+      <div class="plan-detail">
+        <span class="label">Recursos</span>
+        <span class="value">Sync + Trocas + Ranking</span>
+      </div>
+    </div>
+
+    <a href="/album" class="btn-album">Abrir Meu Álbum →</a>
+
+    <p class="email-note">
+      📧 Você receberá um e-mail de confirmação do Stripe com os detalhes da assinatura e link para gerenciá-la.
+    </p>
+  </div>
+
+  <script>
+    // Confetti animation
+    const confettiContainer = document.getElementById('confetti');
+    const colors = ['#8B1A32', '#D4A853', '#28a745', '#007bff', '#ffc107', '#e91e63'];
+
+    for (let i = 0; i < 50; i++) {
+      const span = document.createElement('span');
+      span.style.left = Math.random() * 100 + '%';
+      span.style.background = colors[Math.floor(Math.random() * colors.length)];
+      span.style.animationDelay = Math.random() * 2 + 's';
+      span.style.animationDuration = (2 + Math.random() * 2) + 's';
+      span.style.width = (5 + Math.random() * 10) + 'px';
+      span.style.height = span.style.width;
+      confettiContainer.appendChild(span);
+    }
+  </script>
+
+</body>
+</html>
