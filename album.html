@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Álbum Copa 2026 — Controle de Figurinhas</title>
-  <meta name="description" content="Controle completo das figurinhas da Copa do Mundo 2026. 980 figurinhas, 48 seleções.">
+  <meta name="description" content="Controle completo das figurinhas da Copa do Mundo 2026. 980 figurinhas, 48 seleções, trocas inteligentes com IA.">
   <meta name="theme-color" content="#8B1A32">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,6 +23,8 @@
       --have-border: #4caf50;
       --repeat: #fff3e0;
       --repeat-border: #ff9800;
+      --ai: #e3f2fd;
+      --ai-border: #2196f3;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,9 +61,31 @@
       font-weight: 800;
     }
 
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
     .progress-total {
       font-size: 0.85rem;
       opacity: 0.9;
+    }
+
+    .user-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .user-badge.logged-in {
+      background: var(--secondary);
+      color: var(--dark);
     }
 
     .progress-bar-wrap {
@@ -98,9 +122,9 @@
     .tab {
       flex: 1;
       min-width: fit-content;
-      padding: 0.7rem 1rem;
+      padding: 0.7rem 0.8rem;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--gray);
       cursor: pointer;
@@ -112,6 +136,14 @@
     .tab.active {
       color: var(--primary);
       border-bottom-color: var(--primary);
+    }
+
+    .tab.ai-tab {
+      color: #2196f3;
+    }
+
+    .tab.ai-tab.active {
+      border-bottom-color: #2196f3;
     }
 
     /* SIDEBAR INDEX */
@@ -156,9 +188,7 @@
     }
 
     /* GROUP */
-    .group-section {
-      margin-bottom: 2rem;
-    }
+    .group-section { margin-bottom: 2rem; }
 
     .group-header {
       display: flex;
@@ -174,57 +204,32 @@
       z-index: 50;
     }
 
-    .group-header h2 {
-      font-size: 1rem;
-      color: var(--primary);
-    }
+    .group-header h2 { font-size: 1rem; color: var(--primary); }
 
-    .group-progress {
-      font-size: 0.8rem;
-      color: var(--gray);
-      font-weight: 600;
-    }
+    .group-progress { font-size: 0.8rem; color: var(--gray); font-weight: 600; }
 
     .group-progress-bar {
-      width: 60px;
-      height: 4px;
-      background: #e0e0e0;
-      border-radius: 2px;
-      overflow: hidden;
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 0.5rem;
+      width: 60px; height: 4px; background: #e0e0e0;
+      border-radius: 2px; overflow: hidden;
+      display: inline-block; vertical-align: middle; margin-left: 0.5rem;
     }
 
     .group-progress-bar-fill {
-      height: 100%;
-      background: var(--success);
-      border-radius: 2px;
-      transition: width 0.3s;
+      height: 100%; background: var(--success);
+      border-radius: 2px; transition: width 0.3s;
     }
 
     /* TEAM */
-    .team-section {
-      margin-bottom: 1.5rem;
-    }
+    .team-section { margin-bottom: 1.5rem; }
 
     .team-header {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
-      padding: 0.5rem 0.8rem;
-      margin-bottom: 0.5rem;
+      padding: 0.5rem 0.8rem; margin-bottom: 0.5rem;
     }
 
-    .team-name {
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .team-progress {
-      font-size: 0.75rem;
-      color: var(--gray);
-    }
+    .team-name { font-size: 0.9rem; font-weight: 700; }
+    .team-progress { font-size: 0.75rem; color: var(--gray); }
 
     /* STICKERS GRID */
     .stickers-grid {
@@ -235,200 +240,257 @@
 
     .sticker {
       aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.15s;
-      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      background: white; border: 2px solid #e0e0e0;
+      border-radius: 8px; font-size: 0.7rem; font-weight: 700;
+      cursor: pointer; user-select: none;
+      transition: all 0.15s; position: relative;
     }
 
-    .sticker:active {
-      transform: scale(0.92);
-    }
+    .sticker:active { transform: scale(0.92); }
 
-    .sticker.have {
-      background: var(--have);
-      border-color: var(--have-border);
-      color: #2e7d32;
-    }
-
-    .sticker.repeat {
-      background: var(--repeat);
-      border-color: var(--repeat-border);
-      color: #e65100;
-    }
+    .sticker.have { background: var(--have); border-color: var(--have-border); color: #2e7d32; }
+    .sticker.repeat { background: var(--repeat); border-color: var(--repeat-border); color: #e65100; }
 
     .sticker .count {
-      position: absolute;
-      top: 2px;
-      right: 3px;
-      font-size: 0.55rem;
-      background: #ff9800;
-      color: white;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 2px; right: 3px;
+      font-size: 0.55rem; background: #ff9800; color: white;
+      width: 14px; height: 14px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
     }
 
     /* TAB PANELS */
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
     /* LISTS */
     .list-section {
-      background: white;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
+      background: white; border-radius: 12px;
+      padding: 1rem; margin-bottom: 1rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    .list-section h3 {
-      font-size: 0.9rem;
-      color: var(--primary);
-      margin-bottom: 0.8rem;
-    }
+    .list-section h3 { font-size: 0.9rem; color: var(--primary); margin-bottom: 0.8rem; }
 
-    .list-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
+    .list-items { display: flex; flex-wrap: wrap; gap: 4px; }
 
     .list-item {
-      background: var(--light);
-      padding: 0.3rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      background: var(--light); padding: 0.3rem 0.6rem;
+      border-radius: 6px; font-size: 0.75rem; font-weight: 600;
     }
 
     /* SHARE BUTTONS */
-    .share-section {
-      text-align: center;
-      padding: 2rem 1rem;
-    }
+    .share-section { text-align: center; padding: 2rem 1rem; }
 
     .share-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.8rem 1.5rem;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      border: none;
-      margin: 0.5rem;
-      transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.5rem; border-radius: 50px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      border: none; margin: 0.5rem; transition: all 0.3s;
     }
 
-    .share-btn.whatsapp {
-      background: #25d366;
-      color: white;
-    }
-
-    .share-btn.copy {
-      background: white;
-      color: var(--dark);
-      border: 2px solid #ddd;
-    }
-
-    .share-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    .share-btn.whatsapp { background: #25d366; color: white; }
+    .share-btn.copy { background: white; color: var(--dark); border: 2px solid #ddd; }
+    .share-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
     /* EXPORT */
-    .export-section {
-      text-align: center;
-      padding: 2rem 1rem;
-    }
+    .export-section { text-align: center; padding: 2rem 1rem; }
 
     .export-code {
-      background: var(--dark);
-      color: #0f0;
-      padding: 1rem;
-      border-radius: 12px;
-      font-family: monospace;
-      font-size: 0.7rem;
-      word-break: break-all;
-      margin: 1rem 0;
-      max-height: 200px;
-      overflow-y: auto;
-      text-align: left;
+      background: var(--dark); color: #0f0;
+      padding: 1rem; border-radius: 12px;
+      font-family: monospace; font-size: 0.7rem;
+      word-break: break-all; margin: 1rem 0;
+      max-height: 200px; overflow-y: auto; text-align: left;
     }
 
-    /* PWA BANNER */
-    .pwa-banner {
+    /* ===== MODAL CADASTRO ===== */
+    .modal-overlay {
       display: none;
-      position: fixed;
-      bottom: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      padding: 1rem 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      z-index: 200;
-      text-align: center;
-      max-width: 90%;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      align-items: center; justify-content: center;
+      padding: 1rem;
     }
 
-    .pwa-banner.show {
-      display: block;
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: white; border-radius: 20px;
+      padding: 2rem; max-width: 400px; width: 100%;
+      text-align: center;
       animation: slideUp 0.3s ease;
     }
 
     @keyframes slideUp {
-      from { transform: translateX(-50%) translateY(100%); }
-      to { transform: translateX(-50%) translateY(0); }
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
-    .pwa-banner p {
-      font-size: 0.85rem;
-      margin-bottom: 0.8rem;
+    .modal h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .modal p { color: var(--gray); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+    .modal input {
+      width: 100%; padding: 0.9rem 1rem;
+      border: 2px solid #e0e0e0; border-radius: 12px;
+      font-size: 1rem; margin-bottom: 0.8rem;
+      transition: border-color 0.2s;
     }
+
+    .modal input:focus { outline: none; border-color: var(--primary); }
+
+    .modal .btn-modal {
+      width: 100%; padding: 1rem;
+      background: var(--primary); color: white;
+      border: none; border-radius: 12px;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.3s;
+    }
+
+    .modal .btn-modal:hover { background: var(--primary-dark); }
+    .modal .btn-modal:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .modal .btn-skip {
+      background: none; border: none;
+      color: var(--gray); font-size: 0.85rem;
+      cursor: pointer; margin-top: 1rem;
+      text-decoration: underline;
+    }
+
+    .modal .error-msg {
+      color: #e53935; font-size: 0.8rem;
+      margin-top: 0.5rem; display: none;
+    }
+
+    .modal .success-msg {
+      color: var(--success); font-size: 0.85rem;
+      margin-top: 0.5rem; display: none;
+    }
+
+    /* ===== AI TRADES PANEL ===== */
+    .ai-panel { padding: 1rem 0; }
+
+    .ai-header {
+      text-align: center; padding: 1.5rem 1rem;
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      border-radius: 16px; margin-bottom: 1.5rem;
+    }
+
+    .ai-header h2 { color: #1565c0; font-size: 1.2rem; margin-bottom: 0.3rem; }
+    .ai-header p { color: #1976d2; font-size: 0.85rem; }
+
+    .ai-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem; margin-bottom: 1.5rem;
+    }
+
+    .ai-stat {
+      background: white; border-radius: 12px;
+      padding: 1rem; text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .ai-stat .number { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+    .ai-stat .label { font-size: 0.7rem; color: var(--gray); margin-top: 0.2rem; }
+
+    .trade-card {
+      background: white; border-radius: 16px;
+      padding: 1.2rem; margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-left: 4px solid #2196f3;
+    }
+
+    .trade-card.perfect { border-left-color: var(--success); background: #f1f8e9; }
+
+    .trade-card-header {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 0.8rem;
+    }
+
+    .trade-user { font-weight: 700; font-size: 0.95rem; }
+    .trade-badge {
+      font-size: 0.65rem; font-weight: 700;
+      padding: 0.2rem 0.6rem; border-radius: 20px;
+    }
+
+    .trade-badge.perfect { background: #c8e6c9; color: #2e7d32; }
+    .trade-badge.partial { background: #e3f2fd; color: #1565c0; }
+
+    .trade-summary { font-size: 0.85rem; color: #555; margin-bottom: 0.8rem; }
+
+    .trade-stickers {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 0.8rem;
+    }
+
+    .trade-sticker {
+      font-size: 0.7rem; padding: 0.2rem 0.5rem;
+      border-radius: 4px; font-weight: 600;
+    }
+
+    .trade-sticker.give { background: #c8e6c9; color: #2e7d32; }
+    .trade-sticker.receive { background: #e3f2fd; color: #1565c0; }
+
+    .trade-actions { display: flex; gap: 0.5rem; }
+
+    .trade-btn {
+      flex: 1; padding: 0.6rem;
+      border-radius: 8px; border: none;
+      font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center;
+      justify-content: center; gap: 0.3rem;
+    }
+
+    .trade-btn.whatsapp { background: #25d366; color: white; }
+    .trade-btn.whatsapp:hover { background: #1da851; }
+    .trade-btn.details { background: var(--light); color: var(--dark); }
+
+    .login-prompt {
+      text-align: center; padding: 3rem 1rem;
+    }
+
+    .login-prompt h3 { margin-bottom: 0.5rem; }
+    .login-prompt p { color: var(--gray); margin-bottom: 1.5rem; font-size: 0.9rem; }
+
+    .sync-status {
+      font-size: 0.7rem; color: var(--gray);
+      text-align: center; padding: 0.5rem;
+    }
+
+    .sync-status.syncing { color: #2196f3; }
+    .sync-status.synced { color: var(--success); }
+
+    /* PWA BANNER */
+    .pwa-banner {
+      display: none; position: fixed;
+      bottom: 10px; left: 50%; transform: translateX(-50%);
+      background: white; padding: 1rem 1.5rem;
+      border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 200; text-align: center; max-width: 90%;
+    }
+
+    .pwa-banner.show { display: block; animation: slideUp 0.3s ease; }
+
+    .pwa-banner p { font-size: 0.85rem; margin-bottom: 0.8rem; }
 
     .pwa-banner button {
-      padding: 0.5rem 1.5rem;
-      border-radius: 50px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      margin: 0 0.3rem;
+      padding: 0.5rem 1.5rem; border-radius: 50px;
+      border: none; font-weight: 700; cursor: pointer; margin: 0 0.3rem;
     }
 
-    .pwa-install {
-      background: var(--primary);
-      color: white;
-    }
+    .pwa-install { background: var(--primary); color: white; }
+    .pwa-dismiss { background: #eee; color: var(--dark); }
 
-    .pwa-dismiss {
-      background: #eee;
-      color: var(--dark);
-    }
-
-    /* BOTTOM NAV (mobile) */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
       .main { padding: 0.8rem; padding-right: 40px; }
       .stickers-grid { grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 4px; }
       .sidebar a { width: 32px; height: 32px; font-size: 0.6rem; }
+      .ai-stats { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .ai-stat { padding: 0.7rem 0.5rem; }
+      .ai-stat .number { font-size: 1.2rem; }
     }
   </style>
 </head>
@@ -437,8 +499,13 @@
   <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-inner">
-      <h1>⚽ Álbum Copa 2026</h1>
-      <span class="progress-total" id="progressTotal">0 / 980</span>
+      <h1>⚽ Copa 2026</h1>
+      <div class="topbar-right">
+        <span class="progress-total" id="progressTotal">0 / 980</span>
+        <div class="user-badge" id="userBadge" onclick="showAuthModal()">
+          <span id="userBadgeText">Entrar</span>
+        </div>
+      </div>
     </div>
     <div class="progress-bar-wrap">
       <div class="progress-bar">
@@ -452,6 +519,7 @@
     <div class="tab active" data-tab="album">Álbum</div>
     <div class="tab" data-tab="faltam">Faltam</div>
     <div class="tab" data-tab="repetidas">Repetidas</div>
+    <div class="tab ai-tab" data-tab="trocas-ia">Trocas IA</div>
     <div class="tab" data-tab="trocas">Trocas</div>
     <div class="tab" data-tab="exportar">Exportar</div>
   </div>
@@ -461,6 +529,9 @@
 
   <!-- MAIN -->
   <div class="main">
+    <!-- SYNC STATUS -->
+    <div class="sync-status" id="syncStatus"></div>
+
     <!-- ALBUM TAB -->
     <div class="tab-panel active" id="panel-album"></div>
 
@@ -470,15 +541,25 @@
     <!-- REPETIDAS TAB -->
     <div class="tab-panel" id="panel-repetidas"></div>
 
-    <!-- TROCAS TAB -->
+    <!-- TROCAS IA TAB -->
+    <div class="tab-panel" id="panel-trocas-ia">
+      <div class="login-prompt" id="aiLoginPrompt">
+        <h3>Trocas Inteligentes com IA</h3>
+        <p>Cadastre-se para que a IA encontre automaticamente os melhores parceiros de troca para você.</p>
+        <button class="share-btn" style="background:var(--primary);color:white;" onclick="showAuthModal()">Cadastrar Agora</button>
+      </div>
+      <div class="ai-panel" id="aiPanel" style="display:none;"></div>
+    </div>
+
+    <!-- TROCAS TAB (manual) -->
     <div class="tab-panel" id="panel-trocas">
       <div class="share-section">
         <h2 style="margin-bottom:1rem;">Compartilhar para Trocas</h2>
         <p style="color:var(--gray);margin-bottom:1.5rem;">Envie suas listas para amigos e combine trocas</p>
-        <button class="share-btn whatsapp" onclick="shareWhatsApp('faltam')">📤 Faltam via WhatsApp</button>
-        <button class="share-btn whatsapp" onclick="shareWhatsApp('repetidas')">📤 Repetidas via WhatsApp</button>
-        <button class="share-btn copy" onclick="copyList('faltam')">📋 Copiar Faltantes</button>
-        <button class="share-btn copy" onclick="copyList('repetidas')">📋 Copiar Repetidas</button>
+        <button class="share-btn whatsapp" onclick="shareWhatsApp('faltam')">Faltam via WhatsApp</button>
+        <button class="share-btn whatsapp" onclick="shareWhatsApp('repetidas')">Repetidas via WhatsApp</button>
+        <button class="share-btn copy" onclick="copyList('faltam')">Copiar Faltantes</button>
+        <button class="share-btn copy" onclick="copyList('repetidas')">Copiar Repetidas</button>
       </div>
     </div>
 
@@ -486,17 +567,43 @@
     <div class="tab-panel" id="panel-exportar">
       <div class="export-section">
         <h2 style="margin-bottom:1rem;">Exportar / Importar</h2>
-        <p style="color:var(--gray);margin-bottom:1.5rem;">Use o código para transferir seu progresso ou calcular trocas com amigos</p>
-        <button class="share-btn copy" onclick="exportData()">📦 Gerar Código de Exportação</button>
+        <p style="color:var(--gray);margin-bottom:1.5rem;">Use o código para transferir seu progresso</p>
+        <button class="share-btn copy" onclick="exportData()">Gerar Código</button>
         <div class="export-code" id="exportCode" style="display:none;"></div>
         <div style="margin-top:2rem;">
           <p style="font-size:0.9rem;margin-bottom:0.5rem;font-weight:600;">Importar código:</p>
           <textarea id="importInput" rows="3" style="width:100%;border-radius:8px;border:2px solid #ddd;padding:0.8rem;font-family:monospace;font-size:0.75rem;" placeholder="Cole o código aqui..."></textarea>
-          <button class="share-btn copy" onclick="importData()" style="margin-top:0.5rem;">📥 Importar</button>
+          <button class="share-btn copy" onclick="importData()" style="margin-top:0.5rem;">Importar</button>
         </div>
         <div style="margin-top:2rem;">
-          <button class="share-btn" style="background:#ff5252;color:white;" onclick="resetData()">🗑️ Resetar Tudo</button>
+          <button class="share-btn" style="background:#ff5252;color:white;" onclick="resetData()">Resetar Tudo</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CADASTRO/LOGIN -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <!-- Step 1: Nome + Telefone -->
+      <div id="authStep1">
+        <h2>Entrar no Álbum</h2>
+        <p>Cadastre-se para sincronizar suas figurinhas e encontrar trocas com IA.</p>
+        <input type="text" id="inputNome" placeholder="Seu nome" autocomplete="name">
+        <input type="tel" id="inputTelefone" placeholder="(11) 99999-9999" autocomplete="tel">
+        <button class="btn-modal" id="btnRegister" onclick="doRegister()">Continuar</button>
+        <div class="error-msg" id="authError"></div>
+        <button class="btn-skip" onclick="closeAuthModal()">Usar sem cadastro</button>
+      </div>
+      <!-- Step 2: Código de verificação -->
+      <div id="authStep2" style="display:none;">
+        <h2>Verificar Telefone</h2>
+        <p>Digite o código de 4 dígitos enviado para seu WhatsApp.</p>
+        <input type="text" id="inputCodigo" placeholder="0000" maxlength="4" style="text-align:center;font-size:1.5rem;letter-spacing:0.5rem;">
+        <button class="btn-modal" id="btnVerify" onclick="doVerify()">Verificar</button>
+        <div class="error-msg" id="verifyError"></div>
+        <div class="success-msg" id="verifySuccess"></div>
+        <button class="btn-skip" onclick="closeAuthModal()">Cancelar</button>
       </div>
     </div>
   </div>
@@ -509,6 +616,9 @@
   </div>
 
   <script>
+    // ===== CONFIG =====
+    const API_BASE = '/.netlify/functions';
+
     // ===== DATA: TEAMS & GROUPS =====
     const GROUPS = {
       'A': ['Estados Unidos', 'Marrocos', 'Escócia', 'Classificado A4'],
@@ -525,16 +635,13 @@
       'L': ['Croácia', 'Coreia do Sul', 'Classificado L3', 'Classificado L4'],
     };
 
-    // Stickers per team: prefix + numbers
-    const STICKERS_PER_TEAM = 19; // e.g., USA 1-19
+    const STICKERS_PER_TEAM = 19;
 
-    // Special sections
     const SPECIALS = {
       'FWC': { name: 'FIFA World Cup', count: 20 },
       'CC': { name: 'Coca-Cola', count: 14 },
     };
 
-    // Team code mapping
     const TEAM_CODES = {
       'Estados Unidos': 'USA', 'Marrocos': 'MAR', 'Escócia': 'SCO', 'Classificado A4': 'A4',
       'Espanha': 'ESP', 'Austrália': 'AUS', 'Grécia': 'GRE', 'Classificado B4': 'B4',
@@ -551,18 +658,204 @@
     };
 
     // ===== STATE =====
-    let stickers = {}; // { "USA 1": 0, "USA 2": 1, ... }
+    let stickers = {};
+    let currentUser = null;
+    let authToken = null;
+    let syncTimeout = null;
 
-    // ===== INIT =====
-    function initStickers() {
-      // Load from localStorage
-      const saved = localStorage.getItem('copa2026_stickers');
-      if (saved) {
-        stickers = JSON.parse(saved);
+    // ===== AUTH =====
+    function loadAuth() {
+      authToken = localStorage.getItem('copa2026_token');
+      const userData = localStorage.getItem('copa2026_user');
+      if (userData) {
+        currentUser = JSON.parse(userData);
+        updateUserBadge();
+      }
+      if (authToken) {
+        validateToken();
+      }
+    }
+
+    function updateUserBadge() {
+      const badge = document.getElementById('userBadge');
+      const text = document.getElementById('userBadgeText');
+      if (currentUser) {
+        text.textContent = currentUser.nome.split(' ')[0];
+        badge.classList.add('logged-in');
+      } else {
+        text.textContent = 'Entrar';
+        badge.classList.remove('logged-in');
+      }
+    }
+
+    function showAuthModal() {
+      if (currentUser) {
+        if (confirm(`Logado como ${currentUser.nome}\nTelefone: ${currentUser.telefone}\n\nDeseja sair?`)) {
+          logout();
+        }
         return;
       }
+      document.getElementById('authModal').classList.add('show');
+      document.getElementById('authStep1').style.display = 'block';
+      document.getElementById('authStep2').style.display = 'none';
+    }
 
-      // Initialize all stickers to 0
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('show');
+    }
+
+    async function doRegister() {
+      const nome = document.getElementById('inputNome').value.trim();
+      const telefone = document.getElementById('inputTelefone').value.trim();
+      const errorEl = document.getElementById('authError');
+
+      if (!nome) { showError(errorEl, 'Digite seu nome'); return; }
+      if (!telefone || telefone.replace(/\D/g, '').length < 10) {
+        showError(errorEl, 'Digite um telefone válido'); return;
+      }
+
+      const btn = document.getElementById('btnRegister');
+      btn.disabled = true; btn.textContent = 'Aguarde...';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'register', nome, telefone }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        // Guardar telefone para verificação
+        localStorage.setItem('copa2026_pending_tel', telefone.replace(/\D/g, ''));
+
+        // Mostrar step 2
+        document.getElementById('authStep1').style.display = 'none';
+        document.getElementById('authStep2').style.display = 'block';
+
+        // DEV: mostrar código (remover em produção)
+        if (data._dev_code) {
+          document.getElementById('verifySuccess').style.display = 'block';
+          document.getElementById('verifySuccess').textContent = `Código (dev): ${data._dev_code}`;
+        }
+
+      } catch (e) {
+        showError(errorEl, e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Continuar';
+      }
+    }
+
+    async function doVerify() {
+      const codigo = document.getElementById('inputCodigo').value.trim();
+      const telefone = localStorage.getItem('copa2026_pending_tel');
+      const errorEl = document.getElementById('verifyError');
+
+      if (!codigo || codigo.length !== 4) { showError(errorEl, 'Digite o código de 4 dígitos'); return; }
+
+      const btn = document.getElementById('btnVerify');
+      btn.disabled = true; btn.textContent = 'Verificando...';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'verify', telefone, codigo }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        // Salvar sessão
+        authToken = data.token;
+        currentUser = data.user;
+        localStorage.setItem('copa2026_token', authToken);
+        localStorage.setItem('copa2026_user', JSON.stringify(currentUser));
+
+        updateUserBadge();
+        closeAuthModal();
+
+        // Sincronizar figurinhas
+        syncToCloud();
+
+      } catch (e) {
+        showError(errorEl, e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Verificar';
+      }
+    }
+
+    async function validateToken() {
+      try {
+        const res = await fetch(`${API_BASE}/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+          body: JSON.stringify({ action: 'validate' }),
+        });
+        if (!res.ok) { logout(); return; }
+        const data = await res.json();
+        currentUser = data.user;
+        localStorage.setItem('copa2026_user', JSON.stringify(currentUser));
+        updateUserBadge();
+      } catch (e) {
+        // Silently fail — continue offline
+      }
+    }
+
+    function logout() {
+      authToken = null;
+      currentUser = null;
+      localStorage.removeItem('copa2026_token');
+      localStorage.removeItem('copa2026_user');
+      updateUserBadge();
+    }
+
+    function showError(el, msg) {
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+
+    // ===== SYNC =====
+    async function syncToCloud() {
+      if (!authToken) return;
+
+      const statusEl = document.getElementById('syncStatus');
+      statusEl.textContent = 'Sincronizando...';
+      statusEl.className = 'sync-status syncing';
+
+      try {
+        const res = await fetch(`${API_BASE}/sync-stickers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ stickers }),
+        });
+
+        if (res.ok) {
+          statusEl.textContent = 'Sincronizado';
+          statusEl.className = 'sync-status synced';
+          setTimeout(() => { statusEl.textContent = ''; }, 3000);
+        }
+      } catch (e) {
+        statusEl.textContent = 'Erro ao sincronizar';
+        statusEl.className = 'sync-status';
+      }
+    }
+
+    function scheduleSyncDebounced() {
+      if (syncTimeout) clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => { syncToCloud(); }, 3000); // Sync 3s após última alteração
+    }
+
+    // ===== STICKERS =====
+    function initStickers() {
+      const saved = localStorage.getItem('copa2026_stickers');
+      if (saved) { stickers = JSON.parse(saved); return; }
+
       for (const group of Object.keys(GROUPS)) {
         for (const team of GROUPS[group]) {
           const code = TEAM_CODES[team];
@@ -571,88 +864,50 @@
           }
         }
       }
-      // Specials
-      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
-        stickers[`FWC ${i}`] = 0;
-      }
-      for (let i = 1; i <= SPECIALS.CC.count; i++) {
-        stickers[`CC ${i}`] = 0;
-      }
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) stickers[`FWC ${i}`] = 0;
+      for (let i = 1; i <= SPECIALS.CC.count; i++) stickers[`CC ${i}`] = 0;
     }
 
     function save() {
       localStorage.setItem('copa2026_stickers', JSON.stringify(stickers));
+      scheduleSyncDebounced();
     }
 
-    // ===== RENDER =====
+    // ===== RENDER ALBUM =====
     function renderAlbum() {
       const panel = document.getElementById('panel-album');
       let html = '';
 
-      // Groups A-L
       for (const group of Object.keys(GROUPS)) {
         html += `<div class="group-section" id="group-${group}">`;
-        html += `<div class="group-header">
-          <h2>Grupo ${group}</h2>
-          <span class="group-progress" id="gprog-${group}">0%
-            <span class="group-progress-bar"><span class="group-progress-bar-fill" id="gbar-${group}"></span></span>
-          </span>
-        </div>`;
+        html += `<div class="group-header"><h2>Grupo ${group}</h2><span class="group-progress" id="gprog-${group}">0%<span class="group-progress-bar"><span class="group-progress-bar-fill" id="gbar-${group}"></span></span></span></div>`;
 
         for (const team of GROUPS[group]) {
           const code = TEAM_CODES[team];
-          html += `<div class="team-section">
-            <div class="team-header">
-              <span class="team-name">${team}</span>
-              <span class="team-progress" id="tprog-${code}">0/${STICKERS_PER_TEAM}</span>
-            </div>
-            <div class="stickers-grid">`;
-
+          html += `<div class="team-section"><div class="team-header"><span class="team-name">${team}</span><span class="team-progress" id="tprog-${code}">0/${STICKERS_PER_TEAM}</span></div><div class="stickers-grid">`;
           for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
             const id = `${code} ${i}`;
             html += `<div class="sticker" data-id="${id}" onclick="toggleSticker('${id}')">${code} ${i}</div>`;
           }
-
           html += `</div></div>`;
         }
         html += `</div>`;
       }
 
       // Specials
-      html += `<div class="group-section" id="group-special">`;
-      html += `<div class="group-header">
-        <h2>Especiais</h2>
-        <span class="group-progress" id="gprog-special">0%
-          <span class="group-progress-bar"><span class="group-progress-bar-fill" id="gbar-special"></span></span>
-        </span>
-      </div>`;
-
-      // FWC
-      html += `<div class="team-section">
-        <div class="team-header">
-          <span class="team-name">FIFA World Cup (FWC)</span>
-          <span class="team-progress" id="tprog-FWC">0/${SPECIALS.FWC.count}</span>
-        </div>
-        <div class="stickers-grid">`;
+      html += `<div class="group-section" id="group-special"><div class="group-header"><h2>Especiais</h2><span class="group-progress" id="gprog-special">0%<span class="group-progress-bar"><span class="group-progress-bar-fill" id="gbar-special"></span></span></span></div>`;
+      html += `<div class="team-section"><div class="team-header"><span class="team-name">FIFA World Cup (FWC)</span><span class="team-progress" id="tprog-FWC">0/${SPECIALS.FWC.count}</span></div><div class="stickers-grid">`;
       for (let i = 1; i <= SPECIALS.FWC.count; i++) {
         const id = `FWC ${i}`;
         html += `<div class="sticker" data-id="${id}" onclick="toggleSticker('${id}')">FWC ${i}</div>`;
       }
       html += `</div></div>`;
-
-      // CC
-      html += `<div class="team-section">
-        <div class="team-header">
-          <span class="team-name">Coca-Cola (CC)</span>
-          <span class="team-progress" id="tprog-CC">0/${SPECIALS.CC.count}</span>
-        </div>
-        <div class="stickers-grid">`;
+      html += `<div class="team-section"><div class="team-header"><span class="team-name">Coca-Cola (CC)</span><span class="team-progress" id="tprog-CC">0/${SPECIALS.CC.count}</span></div><div class="stickers-grid">`;
       for (let i = 1; i <= SPECIALS.CC.count; i++) {
         const id = `CC ${i}`;
         html += `<div class="sticker" data-id="${id}" onclick="toggleSticker('${id}')">CC ${i}</div>`;
       }
-      html += `</div></div>`;
-      html += `</div>`;
+      html += `</div></div></div>`;
 
       panel.innerHTML = html;
       updateAllUI();
@@ -671,11 +926,7 @@
     // ===== TOGGLE STICKER =====
     function toggleSticker(id) {
       const current = stickers[id] || 0;
-      if (current >= 5) {
-        stickers[id] = 0;
-      } else {
-        stickers[id] = current + 1;
-      }
+      stickers[id] = current >= 5 ? 0 : current + 1;
       save();
       updateStickerUI(id);
       updateProgress();
@@ -701,9 +952,7 @@
     }
 
     function updateAllUI() {
-      for (const id of Object.keys(stickers)) {
-        updateStickerUI(id);
-      }
+      for (const id of Object.keys(stickers)) updateStickerUI(id);
       updateProgress();
     }
 
@@ -716,7 +965,6 @@
       document.getElementById('progressTotal').textContent = `${have} / ${total}`;
       document.getElementById('progressBarFill').style.width = pct + '%';
 
-      // Group progress
       for (const group of Object.keys(GROUPS)) {
         let groupTotal = 0, groupHave = 0;
         for (const team of GROUPS[group]) {
@@ -728,47 +976,31 @@
         }
         const gpct = groupTotal > 0 ? Math.round((groupHave / groupTotal) * 100) : 0;
         const gprogEl = document.getElementById(`gprog-${group}`);
-        const gbarEl = document.getElementById(`gbar-${group}`);
         if (gprogEl) gprogEl.innerHTML = `${gpct}% <span class="group-progress-bar"><span class="group-progress-bar-fill" style="width:${gpct}%"></span></span>`;
       }
 
-      // Special progress
-      let specTotal = SPECIALS.FWC.count + SPECIALS.CC.count;
-      let specHave = 0;
-      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
-        if ((stickers[`FWC ${i}`] || 0) > 0) specHave++;
-      }
-      for (let i = 1; i <= SPECIALS.CC.count; i++) {
-        if ((stickers[`CC ${i}`] || 0) > 0) specHave++;
-      }
+      let specTotal = SPECIALS.FWC.count + SPECIALS.CC.count, specHave = 0;
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) if ((stickers[`FWC ${i}`] || 0) > 0) specHave++;
+      for (let i = 1; i <= SPECIALS.CC.count; i++) if ((stickers[`CC ${i}`] || 0) > 0) specHave++;
       const spct = Math.round((specHave / specTotal) * 100);
       const sprogEl = document.getElementById('gprog-special');
       if (sprogEl) sprogEl.innerHTML = `${spct}% <span class="group-progress-bar"><span class="group-progress-bar-fill" style="width:${spct}%"></span></span>`;
 
-      // Team progress
       for (const group of Object.keys(GROUPS)) {
         for (const team of GROUPS[group]) {
           const code = TEAM_CODES[team];
           let tHave = 0;
-          for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
-            if ((stickers[`${code} ${i}`] || 0) > 0) tHave++;
-          }
+          for (let i = 1; i <= STICKERS_PER_TEAM; i++) if ((stickers[`${code} ${i}`] || 0) > 0) tHave++;
           const tEl = document.getElementById(`tprog-${code}`);
           if (tEl) tEl.textContent = `${tHave}/${STICKERS_PER_TEAM}`;
         }
       }
-      // FWC & CC team progress
-      let fwcHave = 0;
-      for (let i = 1; i <= SPECIALS.FWC.count; i++) {
-        if ((stickers[`FWC ${i}`] || 0) > 0) fwcHave++;
-      }
+
+      let fwcHave = 0, ccHave = 0;
+      for (let i = 1; i <= SPECIALS.FWC.count; i++) if ((stickers[`FWC ${i}`] || 0) > 0) fwcHave++;
+      for (let i = 1; i <= SPECIALS.CC.count; i++) if ((stickers[`CC ${i}`] || 0) > 0) ccHave++;
       const fwcEl = document.getElementById('tprog-FWC');
       if (fwcEl) fwcEl.textContent = `${fwcHave}/${SPECIALS.FWC.count}`;
-
-      let ccHave = 0;
-      for (let i = 1; i <= SPECIALS.CC.count; i++) {
-        if ((stickers[`CC ${i}`] || 0) > 0) ccHave++;
-      }
       const ccEl = document.getElementById('tprog-CC');
       if (ccEl) ccEl.textContent = `${ccHave}/${SPECIALS.CC.count}`;
     }
@@ -784,6 +1016,7 @@
 
         if (tab.dataset.tab === 'faltam') renderFaltam();
         if (tab.dataset.tab === 'repetidas') renderRepetidas();
+        if (tab.dataset.tab === 'trocas-ia') loadAITrades();
       });
     });
 
@@ -792,24 +1025,15 @@
       const panel = document.getElementById('panel-faltam');
       const missing = Object.entries(stickers).filter(([k, v]) => v === 0).map(([k]) => k);
       if (missing.length === 0) {
-        panel.innerHTML = '<div class="share-section"><h2>🎉 Parabéns!</h2><p>Você tem todas as figurinhas!</p></div>';
+        panel.innerHTML = '<div class="share-section"><h2>Parabéns!</h2><p>Você tem todas as figurinhas!</p></div>';
         return;
       }
-
-      // Group by prefix
       const grouped = {};
-      missing.forEach(id => {
-        const prefix = id.split(' ')[0];
-        if (!grouped[prefix]) grouped[prefix] = [];
-        grouped[prefix].push(id);
-      });
-
+      missing.forEach(id => { const p = id.split(' ')[0]; if (!grouped[p]) grouped[p] = []; grouped[p].push(id); });
       let html = `<p style="text-align:center;color:var(--gray);margin-bottom:1rem;">Total faltando: <strong>${missing.length}</strong></p>`;
       for (const [prefix, items] of Object.entries(grouped)) {
         html += `<div class="list-section"><h3>${prefix} (${items.length})</h3><div class="list-items">`;
-        items.forEach(item => {
-          html += `<span class="list-item">${item}</span>`;
-        });
+        items.forEach(item => { html += `<span class="list-item">${item}</span>`; });
         html += `</div></div>`;
       }
       panel.innerHTML = html;
@@ -823,24 +1047,115 @@
         panel.innerHTML = '<div class="share-section"><h2>Nenhuma repetida</h2><p>Quando tiver figurinhas repetidas, elas aparecerão aqui.</p></div>';
         return;
       }
-
       const totalRepeat = repeats.reduce((sum, r) => sum + r.count, 0);
       const grouped = {};
-      repeats.forEach(({ id, count }) => {
-        const prefix = id.split(' ')[0];
-        if (!grouped[prefix]) grouped[prefix] = [];
-        grouped[prefix].push({ id, count });
-      });
-
+      repeats.forEach(({ id, count }) => { const p = id.split(' ')[0]; if (!grouped[p]) grouped[p] = []; grouped[p].push({ id, count }); });
       let html = `<p style="text-align:center;color:var(--gray);margin-bottom:1rem;">Total repetidas: <strong>${totalRepeat}</strong> (${repeats.length} diferentes)</p>`;
       for (const [prefix, items] of Object.entries(grouped)) {
         html += `<div class="list-section"><h3>${prefix}</h3><div class="list-items">`;
-        items.forEach(({ id, count }) => {
-          html += `<span class="list-item">${id} ×${count}</span>`;
-        });
+        items.forEach(({ id, count }) => { html += `<span class="list-item">${id} ×${count}</span>`; });
         html += `</div></div>`;
       }
       panel.innerHTML = html;
+    }
+
+    // ===== AI TRADES =====
+    async function loadAITrades() {
+      if (!currentUser || !authToken) {
+        document.getElementById('aiLoginPrompt').style.display = 'block';
+        document.getElementById('aiPanel').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('aiLoginPrompt').style.display = 'none';
+      const aiPanel = document.getElementById('aiPanel');
+      aiPanel.style.display = 'block';
+      aiPanel.innerHTML = '<div style="text-align:center;padding:2rem;"><p>Buscando melhores trocas...</p></div>';
+
+      try {
+        // Primeiro sincronizar dados atuais
+        await syncToCloud();
+
+        const res = await fetch(`${API_BASE}/find-trades`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        renderAIPanel(data);
+
+      } catch (e) {
+        aiPanel.innerHTML = `<div style="text-align:center;padding:2rem;"><p style="color:#e53935;">Erro: ${e.message}</p><button class="share-btn copy" onclick="loadAITrades()">Tentar novamente</button></div>`;
+      }
+    }
+
+    function renderAIPanel(data) {
+      const aiPanel = document.getElementById('aiPanel');
+
+      if (!data.matches || data.matches.length === 0) {
+        aiPanel.innerHTML = `
+          <div class="ai-header">
+            <h2>Trocas Inteligentes</h2>
+            <p>${data.message || 'Nenhuma troca encontrada.'}</p>
+          </div>
+          <div style="text-align:center;padding:2rem;">
+            <p style="color:var(--gray);margin-bottom:1rem;">Convide amigos para se cadastrarem e a IA encontrará as melhores trocas!</p>
+            <button class="share-btn whatsapp" onclick="shareInvite()">Convidar via WhatsApp</button>
+          </div>`;
+        return;
+      }
+
+      let html = `
+        <div class="ai-header">
+          <h2>Trocas Inteligentes</h2>
+          <p>${data.message}</p>
+        </div>
+        <div class="ai-stats">
+          <div class="ai-stat"><div class="number">${data.stats.total_matches}</div><div class="label">Parceiros</div></div>
+          <div class="ai-stat"><div class="number">${data.stats.perfect_trades}</div><div class="label">Trocas Perfeitas</div></div>
+          <div class="ai-stat"><div class="number">${data.stats.total_stickers_available}</div><div class="label">Figurinhas Disponíveis</div></div>
+        </div>`;
+
+      for (const match of data.matches.slice(0, 20)) {
+        const cardClass = match.is_perfect_trade ? 'trade-card perfect' : 'trade-card';
+        const badgeClass = match.is_perfect_trade ? 'trade-badge perfect' : 'trade-badge partial';
+        const badgeText = match.is_perfect_trade ? 'TROCA PERFEITA' : 'PARCIAL';
+
+        html += `
+          <div class="${cardClass}">
+            <div class="trade-card-header">
+              <span class="trade-user">${match.nome}</span>
+              <span class="${badgeClass}">${badgeText}</span>
+            </div>
+            <p class="trade-summary">${match.trade_summary}</p>`;
+
+        if (match.can_give_me.length > 0) {
+          html += `<p style="font-size:0.75rem;font-weight:600;color:#1565c0;margin-bottom:0.3rem;">Ele tem (você precisa):</p><div class="trade-stickers">`;
+          match.can_give_me.slice(0, 10).forEach(s => { html += `<span class="trade-sticker receive">${s}</span>`; });
+          if (match.can_give_me_count > 10) html += `<span class="trade-sticker receive">+${match.can_give_me_count - 10}</span>`;
+          html += `</div>`;
+        }
+
+        if (match.can_take_from_me.length > 0) {
+          html += `<p style="font-size:0.75rem;font-weight:600;color:#2e7d32;margin-bottom:0.3rem;">Você tem (ele precisa):</p><div class="trade-stickers">`;
+          match.can_take_from_me.slice(0, 10).forEach(s => { html += `<span class="trade-sticker give">${s}</span>`; });
+          if (match.can_take_from_me_count > 10) html += `<span class="trade-sticker give">+${match.can_take_from_me_count - 10}</span>`;
+          html += `</div>`;
+        }
+
+        html += `
+            <div class="trade-actions">
+              <button class="trade-btn whatsapp" onclick="window.open('${match.whatsapp_link}?text=${encodeURIComponent(`Oi ${match.nome}! Vi no Álbum Copa 2026 que temos figurinhas para trocar. Vamos combinar?`)}', '_blank')">WhatsApp</button>
+              <button class="trade-btn details" onclick="alert('${match.nome}\\nTel: ${match.telefone_masked}\\n\\nEle tem ${match.can_give_me_count} que você precisa\\nVocê tem ${match.can_take_from_me_count} que ele precisa')">Detalhes</button>
+            </div>
+          </div>`;
+      }
+
+      html += `<div style="text-align:center;margin-top:1.5rem;"><button class="share-btn whatsapp" onclick="shareInvite()">Convidar mais amigos</button></div>`;
+
+      aiPanel.innerHTML = html;
     }
 
     // ===== SHARE =====
@@ -857,23 +1172,20 @@
 
     function shareWhatsApp(type) {
       const text = getListText(type);
-      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function shareInvite() {
+      const text = `⚽ Estou usando o Álbum Copa 2026 para controlar minhas figurinhas!\n\nA IA encontra trocas perfeitas automaticamente. Cadastre-se e vamos trocar:\n\n${window.location.origin}/album`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
     function copyList(type) {
       const text = getListText(type);
-      navigator.clipboard.writeText(text).then(() => {
-        alert('Lista copiada!');
-      }).catch(() => {
-        // Fallback
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        alert('Lista copiada!');
+      navigator.clipboard.writeText(text).then(() => alert('Lista copiada!')).catch(() => {
+        const ta = document.createElement('textarea'); ta.value = text;
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta); alert('Lista copiada!');
       });
     }
 
@@ -881,8 +1193,7 @@
     function exportData() {
       const code = btoa(JSON.stringify(stickers));
       const el = document.getElementById('exportCode');
-      el.textContent = code;
-      el.style.display = 'block';
+      el.textContent = code; el.style.display = 'block';
       navigator.clipboard.writeText(code).catch(() => {});
       alert('Código gerado e copiado!');
     }
@@ -893,41 +1204,30 @@
       try {
         const data = JSON.parse(atob(input));
         if (typeof data !== 'object') throw new Error();
-        stickers = data;
-        save();
-        renderAlbum();
+        stickers = data; save(); renderAlbum();
         alert('Dados importados com sucesso!');
-      } catch(e) {
-        alert('Código inválido. Verifique e tente novamente.');
-      }
+      } catch(e) { alert('Código inválido.'); }
     }
 
     function resetData() {
       if (!confirm('Tem certeza? Isso apagará TODO o seu progresso!')) return;
       if (!confirm('Última chance! Realmente deseja apagar tudo?')) return;
       localStorage.removeItem('copa2026_stickers');
-      stickers = {};
-      initStickers();
-      renderAlbum();
+      stickers = {}; initStickers(); renderAlbum();
       alert('Dados resetados.');
     }
 
     // ===== PWA =====
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
+      e.preventDefault(); deferredPrompt = e;
       if (!localStorage.getItem('copa2026_pwa_dismissed')) {
         document.getElementById('pwaBanner').classList.add('show');
       }
     });
 
     document.getElementById('pwaInstall').addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-      }
+      if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; }
       document.getElementById('pwaBanner').classList.remove('show');
     });
 
@@ -936,21 +1236,31 @@
       localStorage.setItem('copa2026_pwa_dismissed', '1');
     }
 
-    // iOS Safari detection
     if (navigator.standalone === false || (navigator.userAgent.match(/iPhone|iPad/) && !window.navigator.standalone)) {
       if (!localStorage.getItem('copa2026_pwa_dismissed')) {
         setTimeout(() => {
           document.getElementById('pwaBanner').classList.add('show');
-          document.querySelector('#pwaBanner p').innerHTML = '<strong>Instale o app!</strong><br>Toque em <strong>Compartilhar ↗</strong> e depois <strong>"Adicionar à Tela de Início"</strong>';
+          document.querySelector('#pwaBanner p').innerHTML = '<strong>Instale o app!</strong><br>Toque em <strong>Compartilhar</strong> e depois <strong>"Adicionar à Tela de Início"</strong>';
           document.getElementById('pwaInstall').style.display = 'none';
         }, 3000);
       }
     }
 
+    // ===== PHONE MASK =====
+    document.getElementById('inputTelefone').addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+      else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      else if (v.length > 0) v = `(${v}`;
+      e.target.value = v;
+    });
+
     // ===== INIT =====
     initStickers();
     renderAlbum();
     renderSidebar();
+    loadAuth();
   </script>
 
 </body>

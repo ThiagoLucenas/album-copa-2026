@@ -14,3 +14,7 @@
   from   = "/sucesso"
   to     = "/sucesso.html"
   status = 200
+
+[context.production.environment]
+  # SUPABASE_URL e SUPABASE_SERVICE_KEY devem ser configurados
+  # manualmente em Site settings > Environment variables
